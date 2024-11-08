@@ -6,6 +6,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.0.4] - 2024-11-08
+
+### Added
+
+- Add runTestCreate command to create test files with user input
+
 ## [0.0.3] - 2024-11-08
 
 ### Changed

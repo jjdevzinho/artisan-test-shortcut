@@ -13,6 +13,9 @@ export function activate(context: vscode.ExtensionContext) {
     }),
     vscode.commands.registerCommand("artisanTest.runTestDirty", () => {
       runTask("Artisan Test Dirty");
+    }),
+    vscode.commands.registerCommand("artisanTest.runTestCreate", () => {
+      runTestCreate();
     })
   );
 }
@@ -162,6 +165,64 @@ function runTask(taskName: string) {
   } else {
     vscode.window.showErrorMessage(`Task ${taskName} not found`);
   }
+}
+
+function runTestCreate() {
+  vscode.window
+    .showInputBox({ prompt: "Enter the test file name" })
+    .then((fileName) => {
+      if (fileName === undefined) {
+        return;
+      }
+
+      if (!fileName) {
+        vscode.window.showErrorMessage("Test file name is required");
+        return;
+      }
+
+      vscode.window
+        .showQuickPick(
+          [
+            { label: "Pest", description: "pest" },
+            { label: "PHPUnit", description: "phpunit" },
+          ],
+          { placeHolder: "Select the test framework", canPickMany: false }
+        )
+        .then((framework) => {
+          if (!framework) {
+            framework = { label: "Pest", description: "pest" }; // Default to Pest
+          }
+
+          vscode.window
+            .showQuickPick(
+              [
+                { label: "Feature", description: "feature" },
+                { label: "Unit", description: "unit" },
+              ],
+              { placeHolder: "Select the test type", canPickMany: false }
+            )
+            .then((testType) => {
+              // No need to set default for testType as Laravel defaults to Feature
+              const args = ["make:test", fileName];
+              if (framework.description === "phpunit") {
+                args.push(`--${framework.description}`);
+              }
+              if (testType && testType.description === "unit") {
+                args.push(`--${testType.description}`);
+              }
+
+              const vscodeTask = new vscode.Task(
+                { type: "shell", task: "Artisan Test Create" },
+                vscode.TaskScope.Workspace,
+                "Artisan Test Create",
+                "shell",
+                new vscode.ShellExecution("php", ["artisan", ...args]),
+                []
+              );
+              vscode.tasks.executeTask(vscodeTask);
+            });
+        });
+    });
 }
 
 export function deactivate() {}
