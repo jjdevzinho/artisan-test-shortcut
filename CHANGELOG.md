@@ -6,4 +6,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.0.2] - 2024-11-08
+### Added
+- Added icon for the extension.
+- Added GIFs demonstrating the functionality of the extension.
+
+## [0.0.1] - 2024-11-05
+### Added
 - Initial release

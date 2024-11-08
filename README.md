@@ -2,6 +2,15 @@
 
 This extension provides keyboard shortcuts to run Artisan Test commands in Visual Studio Code. It is especially useful for developers working with Laravel who want to run tests quickly.
 
+### Screenshots
+
+![Screenshot 1](images/f9.gif)
+
+![Screenshot 2](images/f10.gif)
+
+![Screenshot 3](images/f11.gif)
+
+
 ## Keyboard Shortcuts
 
 Here are the available keyboard shortcuts and what each of them does:
