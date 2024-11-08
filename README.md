@@ -10,7 +10,6 @@ This extension provides keyboard shortcuts to run Artisan Test commands in Visua
 
 ![Screenshot 3](images/f11.gif)
 
-
 ## Keyboard Shortcuts
 
 Here are the available keyboard shortcuts and what each of them does:
@@ -59,6 +58,10 @@ Here are the available keyboard shortcuts and what each of them does:
 ## Contribution
 
 Feel free to contribute with improvements or fixes. Fork the repository, create a branch for your changes, and submit a pull request.
+
+## Development
+
+For instructions on how to develop and test this extension, see [DEVELOPMENT.md](DEVELOPMENT.md).
 
 ## License
 
