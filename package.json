@@ -1,20 +1,63 @@
 {
   "name": "artisan-test-shortcut",
   "displayName": "Artisan Test Shortcut",
-  "description": "shortcuts for artisan test",
+  "description": "Shortcuts for Artisan Test",
   "version": "0.0.1",
+  "publisher": "jjdevzinho",
+  "author": "jjdevzinho <jjdevzinho@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jjdevzinho/artisan-test-shortcut.git"
+  },
+  "license": "MIT",
   "engines": {
     "vscode": "^1.95.0"
   },
   "categories": [
     "Keymaps"
   ],
+  "main": "./out/extension.js",
   "contributes": {
+    "commands": [
+      {
+        "command": "artisanTest.runTest",
+        "title": "Run Artisan Test"
+      },
+      {
+        "command": "artisanTest.runTestFile",
+        "title": "Run Artisan Test File"
+      },
+      {
+        "command": "artisanTest.runTestFilter",
+        "title": "Run Artisan Test Filter"
+      },
+      {
+        "command": "artisanTest.runTestDirty",
+        "title": "Run Artisan Test Dirty"
+      }
+    ],
     "keybindings": [
       {
-        "key": "ctrl+.",
-        "command": "workbench.action.showCommands"
+        "key": "ctrl+shift+f11",
+        "command": "artisanTest.runTest"
+      },
+      {
+        "key": "ctrl+shift+f9",
+        "command": "artisanTest.runTestFile",
+        "when": "resourceLangId == 'php' && resourceFilename =~ /Test.php$/"
+      },
+      {
+        "key": "ctrl+shift+f9",
+        "command": "artisanTest.runTestDirty",
+        "when": "!(resourceFilename =~ /Test.php$/)"
+      },
+      {
+        "key": "ctrl+shift+f10",
+        "command": "artisanTest.runTestFilter"
       }
     ]
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.95.0"
   }
 }

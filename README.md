@@ -1,16 +1,62 @@
-# artisan-test-shortcut README
+# Artisan Test Shortcut
 
-## Working with Markdown
+This extension provides keyboard shortcuts to run Artisan Test commands in Visual Studio Code. It is especially useful for developers working with Laravel who want to run tests quickly.
 
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
+## Keyboard Shortcuts
 
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
+Here are the available keyboard shortcuts and what each of them does:
 
-## For more information
+- `Ctrl+Shift+F11`: Runs the `artisan test` command to run all tests.
+- `Ctrl+Shift+F9`: Runs the `artisan test` command on the current file if the file ends with `Test.php`. Otherwise, it runs the `artisan test --dirty` command.
+- `Ctrl+Shift+F10`: Runs the `artisan test --filter` command and prompts the user to enter the filter tag for the test.
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+## Commands
+
+### Run Artisan Test
+
+- **Command:** `artisanTest.runTest`
+- **Description:** Runs the `artisan test` command and allows the user to choose between the options:
+  - All Files
+  - All Files With Parallel (`--parallel`)
+  - Files Dirty (`--dirty`)
+
+### Run Artisan Test File
+
+- **Command:** `artisanTest.runTestFile`
+- **Description:** Runs the `artisan test` command on the current file if the file ends with `Test.php`.
+
+### Run Artisan Test Filter
+
+- **Command:** `artisanTest.runTestFilter`
+- **Description:** Runs the `artisan test --filter` command and prompts the user to enter the filter tag for the test.
+
+### Run Artisan Test Dirty
+
+- **Command:** `artisanTest.runTestDirty`
+- **Description:** Runs the `artisan test --dirty` command.
+
+## Installation
+
+1. Install the extension from the Visual Studio Code Marketplace.
+2. Open Visual Studio Code.
+3. Go to the Extensions view (`Ctrl+Shift+X`).
+4. Search for "Artisan Test Shortcut" and install the extension.
+
+## Usage
+
+1. Open a Laravel project with PHP files in Visual Studio Code.
+2. Use the keyboard shortcuts mentioned above to run the Artisan Test commands.
+
+## Contribution
+
+Feel free to contribute with improvements or fixes. Fork the repository, create a branch for your changes, and submit a pull request.
+
+## License
+
+This extension is licensed under the MIT license. See the LICENSE file for more information.
 
 **Enjoy!**
+
+## Repository
+
+[GitHub Repository](https://github.com/jjdevzinho/artisan-test-shortcut)
