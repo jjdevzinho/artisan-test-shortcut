@@ -27,27 +27,6 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
-    "configuration": {
-      "type": "object",
-      "title": "Artisan Test Shortcut",
-      "properties": {
-        "artisanTest.enableCodeLens": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable CodeLens for running test methods"
-        },
-        "artisanTest.enableHover": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable hover link for running test methods"
-        },
-        "artisanTest.enableCodeActions": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable CodeActions for running test methods"
-        }
-      }
-    },
     "commands": [
       {
         "command": "artisanTest.runTestCreate",
@@ -97,7 +76,28 @@
         "key": "ctrl+shift+f11",
         "command": "artisanTest.runTest"
       }
-    ]
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Artisan Test Shortcut",
+      "properties": {
+        "artisanTest.enableCodeLens": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable CodeLens for running test methods"
+        },
+        "artisanTest.enableHover": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable hover link for running test methods"
+        },
+        "artisanTest.enableCodeActions": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable CodeActions for running test methods"
+        }
+      }
+    }
   },
   "devDependencies": {
     "@types/vscode": "^1.95.0"
