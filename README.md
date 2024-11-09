@@ -4,11 +4,13 @@ This extension provides keyboard shortcuts to run Artisan Test commands in Visua
 
 ### Screenshots
 
-![Screenshot 1](images/f9.gif)
+![Screenshot 1](images/f8.gif)
 
-![Screenshot 2](images/f10.gif)
+![Screenshot 2](images/f9.gif)
 
-![Screenshot 3](images/f11.gif)
+![Screenshot 3](images/f10.gif)
+
+![Screenshot 4](images/f11.gif)
 
 ## Keyboard Shortcuts
 
@@ -42,6 +44,11 @@ Here are the available keyboard shortcuts and what each of them does:
 
 - **Command:** `artisanTest.runTestDirty`
 - **Description:** Runs the `artisan test --dirty` command.
+
+### Create Test File
+
+- **Command:** `artisanTest.runTestCreate`
+- **Description:** Prompts the user to enter the test file name, select the test framework (Pest or PHPUnit), and select the test type (Feature or Unit). Creates a new test file using the selected options.
 
 ## Installation
 

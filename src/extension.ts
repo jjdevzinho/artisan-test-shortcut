@@ -189,6 +189,11 @@ function runTestCreate() {
           { placeHolder: "Select the test framework", canPickMany: false }
         )
         .then((framework) => {
+          if (framework === undefined) {
+            // User cancelled the input
+            return;
+          }
+
           if (!framework) {
             framework = { label: "Pest", description: "pest" }; // Default to Pest
           }
@@ -202,6 +207,10 @@ function runTestCreate() {
               { placeHolder: "Select the test type", canPickMany: false }
             )
             .then((testType) => {
+              if (testType === undefined) {
+                // User cancelled the input
+                return;
+              }
               // No need to set default for testType as Laravel defaults to Feature
               const args = ["make:test", fileName];
               if (framework.description === "phpunit") {
