@@ -6,6 +6,15 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.0.6] - 2024-11-08
+
+### Added
+
+- Added CodeLens to run test methods.
+- Added hover link to run test methods.
+- Added CodeActions to run test methods.
+- Added configuration options to enable/disable CodeLens, hover, and CodeActions.
+
 ## [0.0.5] - 2024-11-08
 
 ### Changed
