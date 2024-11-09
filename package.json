@@ -27,6 +27,27 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "Artisan Test Shortcut",
+      "properties": {
+        "artisanTest.enableCodeLens": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable CodeLens for running test methods"
+        },
+        "artisanTest.enableHover": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable hover link for running test methods"
+        },
+        "artisanTest.enableCodeActions": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable CodeActions for running test methods"
+        }
+      }
+    },
     "commands": [
       {
         "command": "artisanTest.runTestCreate",
