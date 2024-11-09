@@ -17,6 +17,14 @@
   "categories": [
     "Keymaps"
   ],
+  "keywords": [
+    "php",
+    "laravel",
+    "pest",
+    "phpunit",
+    "artisan",
+    "test"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
