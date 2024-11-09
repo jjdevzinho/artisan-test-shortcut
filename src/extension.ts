@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { activateTestDecorations } from "./testOnFile";
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
@@ -18,6 +19,8 @@ export function activate(context: vscode.ExtensionContext) {
       runTestCreate();
     })
   );
+
+  activateTestDecorations(context);
 }
 
 function runTask(taskName: string) {

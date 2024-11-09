@@ -2,7 +2,7 @@
   "name": "artisan-test-shortcut",
   "displayName": "Artisan Test Shortcut",
   "description": "Shortcuts for Artisan Test",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "icon": "images/icon.png",
   "publisher": "jjdevzinho",
   "author": "jjdevzinho <jjdevzinho@gmail.com>",
@@ -47,6 +47,10 @@
       {
         "command": "artisanTest.runTestDirty",
         "title": "Run Artisan Test Dirty"
+      },
+      {
+        "command": "artisanTest.runTestMethod",
+        "title": "Run This Test"
       }
     ],
     "keybindings": [

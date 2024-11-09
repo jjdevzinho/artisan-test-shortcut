@@ -16,8 +16,9 @@ This extension provides keyboard shortcuts to run Artisan Test commands in Visua
 
 Here are the available keyboard shortcuts and what each of them does:
 
-- `Ctrl+Shift+F11`: Runs the `artisan test` command to run all tests.
+- `Ctrl+Shift+F8`: Runs the `artisan test create` command to create a new test file.
 - `Ctrl+Shift+F9`: Runs the `artisan test` command on the current file if the file ends with `Test.php`. Otherwise, it runs the `artisan test --dirty` command.
+- `Ctrl+Shift+F11`: Runs the `artisan test` command to run all tests.
 - `Ctrl+Shift+F10`: Runs the `artisan test --filter` command and prompts the user to enter the filter tag for the test.
 
 ## Commands
