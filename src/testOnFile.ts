@@ -1,114 +1,102 @@
 import * as vscode from "vscode";
 
-export async function activateTestDecorations(
-  context: vscode.ExtensionContext
-) {
-  let codeLensProvider: vscode.Disposable | undefined;
-  let hoverProvider: vscode.Disposable | undefined;
-  let codeActionsProvider: vscode.Disposable | undefined;
+export function activateTestDecorations(context: vscode.ExtensionContext) {
+  const codeLensProvider = vscode.languages.registerCodeLensProvider("php", {
+    provideCodeLenses(document, token) {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) {
+        return [];
+      }
 
-  async function registerProviders() {
-    const config = vscode.workspace.getConfiguration("artisanTest");
+      const fileName = document.fileName;
 
-    if (config.get("enableCodeLens")) {
-      codeLensProvider = vscode.languages.registerCodeLensProvider("php", {
-        provideCodeLenses(document, token) {
-          const text = document.getText();
-          const regexGlobal = /\b(it|test)\s*\(\s*['"`](.*?)['"`]/g;
-          const lenses: vscode.CodeLens[] = [];
-          let match;
-          while ((match = regexGlobal.exec(text))) {
-            const startPos = document.positionAt(match.index);
-            const range = new vscode.Range(startPos, startPos);
-            const methodName = match[2];
-            const lens = new vscode.CodeLens(range, {
-              title: "Run This Test",
-              command: "artisanTest.runTestMethod",
-              arguments: [document.uri, methodName],
-            });
-            lenses.push(lens);
-          }
-          return lenses;
-        },
-      });
-      context.subscriptions.push(codeLensProvider);
-    }
+      // Check if the file is in the tests directory and ends with Test.php
+      if (!fileName.endsWith("Test.php")) {
+        return [];
+      }
 
-    if (config.get("enableHover")) {
-      hoverProvider = vscode.languages.registerHoverProvider("php", {
-        provideHover(document, position, token) {
-          const line = document.lineAt(position.line);
-          const regexSingle = /\b(it|test)\s*\(\s*['"`](.*?)['"`]/;
-          const match = regexSingle.exec(line.text);
-          if (match) {
-            const methodName = match[2];
-            const markdownString = new vscode.MarkdownString(
-              `[Run This Test](command:artisanTest.runTestMethod?${encodeURIComponent(
-                JSON.stringify([document.uri, methodName])
-              )})`
-            );
-            markdownString.isTrusted = true;
-            return new vscode.Hover(markdownString);
-          }
-          return undefined;
-        },
-      });
-      context.subscriptions.push(hoverProvider);
-    }
+      const text = document.getText();
+      const regexPest = /\b(it|test|describe)\s*\(\s*['"`](.*?)['"`]/g;
+      const regexPhpUnit = /public\s+function\s+(test\w*)\s*\(/g;
+      const lenses: vscode.CodeLens[] = [];
+      let match;
 
-    if (config.get("enableCodeActions")) {
-      codeActionsProvider = vscode.languages.registerCodeActionsProvider(
-        "php",
-        {
-          provideCodeActions(document, range, context, token) {
-            const line = document.lineAt(range.start.line);
-            const regexSingle = /\b(it|test)\s*\(\s*['"`](.*?)['"`]/;
-            const match = regexSingle.exec(line.text);
-            if (match) {
-              const methodName = match[2];
-              const action = new vscode.CodeAction(
-                "Run This Test",
-                vscode.CodeActionKind.Empty
-              );
-              action.command = {
-                command: "artisanTest.runTestMethod",
-                title: "Run This Test",
-                arguments: [document.uri, methodName],
-              };
-              return [action];
-            }
-            return [];
-          },
+      // Detect Pest test methods
+      while ((match = regexPest.exec(text))) {
+        const startPos = document.positionAt(match.index);
+        const range = new vscode.Range(startPos, startPos);
+        const methodName = match[2];
+        if (methodName) {
+          const lens = new vscode.CodeLens(range, {
+            title: "Run This Test",
+            command: "artisanTest.runTestMethod",
+            arguments: [document.uri, methodName],
+          });
+          lenses.push(lens);
         }
-      );
-      context.subscriptions.push(codeActionsProvider);
-    }
-  }
+      }
 
-  function unregisterProviders() {
-    if (codeLensProvider) {
-      codeLensProvider.dispose();
-    }
-    if (hoverProvider) {
-      hoverProvider.dispose();
-    }
-    if (codeActionsProvider) {
-      codeActionsProvider.dispose();
-    }
-  }
+      // Detect PHPUnit test methods
+      while ((match = regexPhpUnit.exec(text))) {
+        const startPos = document.positionAt(match.index);
+        const range = new vscode.Range(startPos, startPos);
+        const methodName = match[1];
+        if (methodName) {
+          const lens = new vscode.CodeLens(range, {
+            title: "Run This Test",
+            command: "artisanTest.runTestMethod",
+            arguments: [document.uri, methodName],
+          });
+          lenses.push(lens);
+        }
+      }
 
-  await registerProviders();
-
-  vscode.workspace.onDidChangeConfiguration(async (e) => {
-    if (
-      e.affectsConfiguration("artisanTest.enableCodeLens") ||
-      e.affectsConfiguration("artisanTest.enableHover") ||
-      e.affectsConfiguration("artisanTest.enableCodeActions")
-    ) {
-      unregisterProviders();
-      await registerProviders();
-    }
+      return lenses;
+    },
   });
+  context.subscriptions.push(codeLensProvider);
+
+  const codeActionsProvider = vscode.languages.registerCodeActionsProvider(
+    "php",
+    {
+      provideCodeActions(document, range, context, token) {
+        const line = document.lineAt(range.start.line);
+        const regexPest = /\b(it|test|describe)\s*\(\s*['"`](.*?)['"`]/g;
+        const regexPhpUnit = /public\s+function\s+(test\w*)\s*\(/;
+        let match;
+        let methodName;
+
+        // Detect Pest test methods
+        match = regexPest.exec(line.text);
+        if (match) {
+          methodName = match[2];
+        }
+
+        // Detect PHPUnit test methods
+        if (!methodName) {
+          match = regexPhpUnit.exec(line.text);
+          if (match) {
+            methodName = match[1];
+          }
+        }
+
+        if (methodName) {
+          const action = new vscode.CodeAction(
+            "Run This Test",
+            vscode.CodeActionKind.Empty
+          );
+          action.command = {
+            command: "artisanTest.runTestMethod",
+            title: "Run This Test",
+            arguments: [document.uri, methodName],
+          };
+          return [action];
+        }
+        return [];
+      },
+    }
+  );
+  context.subscriptions.push(codeActionsProvider);
 
   context.subscriptions.push(
     vscode.commands.registerCommand(

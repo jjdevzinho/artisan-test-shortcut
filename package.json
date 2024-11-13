@@ -2,7 +2,7 @@
   "name": "artisan-test-shortcut",
   "displayName": "Artisan Test Shortcut",
   "description": "Shortcuts for Artisan Test",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "icon": "images/icon.png",
   "publisher": "jjdevzinho",
   "author": "jjdevzinho <jjdevzinho@gmail.com>",
@@ -15,7 +15,8 @@
     "vscode": "^1.95.0"
   },
   "categories": [
-    "Keymaps"
+    "Keymaps",
+    "Other"
   ],
   "keywords": [
     "php",
@@ -76,30 +77,14 @@
         "key": "ctrl+shift+f11",
         "command": "artisanTest.runTest"
       }
-    ],
-    "configuration": {
-      "type": "object",
-      "title": "Artisan Test Shortcut",
-      "properties": {
-        "artisanTest.enableCodeLens": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable CodeLens for running test methods"
-        },
-        "artisanTest.enableHover": {
-          "type": "boolean",
-          "default": false,
-          "description": "Enable hover link for running test methods"
-        },
-        "artisanTest.enableCodeActions": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable CodeActions for running test methods"
-        }
-      }
-    }
+    ]
   },
+  "activationEvents": [
+    "onLanguage:php",
+    "onCommand:extension.runTest"
+  ],
   "devDependencies": {
-    "@types/vscode": "^1.95.0"
+    "@types/vscode": "^1.95.0",
+    "typescript": "^5.6.3"
   }
 }

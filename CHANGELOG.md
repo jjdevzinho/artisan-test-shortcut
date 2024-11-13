@@ -8,6 +8,13 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [0.0.6] - 2024-11-08
 
+### Removed
+
+- Removed configuration options for enabling/disabling hover link.
+- Removed hover link functionality for running test methods.
+
+## [0.0.6] - 2024-11-08
+
 ### Added
 
 - Added CodeLens to run test methods.
