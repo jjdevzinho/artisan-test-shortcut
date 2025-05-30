@@ -109,13 +109,15 @@ export function activateTestDecorations(context: vscode.ExtensionContext) {
 }
 
 async function runTestMethod(uri: vscode.Uri, methodName: string) {
+  // Pegue o comando configurado pelo usuário
+  const phpCommand = vscode.workspace.getConfiguration("artisanTestShortcut").get<string>("phpCommand", "php");
   const args = ["artisan", "test", uri.fsPath, "--filter", methodName];
   const vscodeTask = new vscode.Task(
     { type: "shell", task: "Run Test Method" },
     vscode.TaskScope.Workspace,
     "Run Test Method",
     "shell",
-    new vscode.ShellExecution("php", args),
+    new vscode.ShellExecution(phpCommand, args),
     []
   );
   await vscode.tasks.executeTask(vscodeTask);

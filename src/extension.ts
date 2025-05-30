@@ -23,12 +23,17 @@ export function activate(context: vscode.ExtensionContext) {
   activateTestDecorations(context);
 }
 
+function getPhpCommand(): string {
+  return vscode.workspace.getConfiguration("artisanTestShortcut").get<string>("phpCommand", "php");
+}
+
 function runTask(taskName: string) {
+  const phpCommand = getPhpCommand();
   const tasks = [
     {
       label: "Artisan Test",
       type: "shell",
-      command: "php",
+      command: phpCommand,
       args: ["artisan", "test"],
       group: {
         kind: "test",
@@ -43,7 +48,7 @@ function runTask(taskName: string) {
     {
       label: "Artisan Test Parallel",
       type: "shell",
-      command: "php",
+      command: phpCommand,
       args: ["artisan", "test", "--parallel"],
       group: {
         kind: "test",
@@ -58,7 +63,7 @@ function runTask(taskName: string) {
     {
       label: "Artisan Test File",
       type: "shell",
-      command: "php",
+      command: phpCommand,
       args: ["artisan", "test", "${file}"],
       group: {
         kind: "test",
@@ -73,7 +78,7 @@ function runTask(taskName: string) {
     {
       label: "Artisan Test Filter",
       type: "shell",
-      command: "php",
+      command: phpCommand,
       args: ["artisan", "test", "--filter", "${input:filterTag}"],
       group: {
         kind: "test",
@@ -88,7 +93,7 @@ function runTask(taskName: string) {
     {
       label: "Artisan Test Dirty",
       type: "shell",
-      command: "php",
+      command: phpCommand,
       args: ["artisan", "test", "--dirty"],
       group: {
         kind: "test",
@@ -134,26 +139,19 @@ function runTask(taskName: string) {
           }
         });
     } else if (taskName === "Artisan Test Filter") {
-      vscode.window
-        .showInputBox({ prompt: "Enter the filter tag for the test" })
-        .then((filterTag) => {
-          if (filterTag) {
-            const vscodeTask = new vscode.Task(
-              { type: task.type, task: task.label },
-              vscode.TaskScope.Workspace,
-              task.label,
-              task.type,
-              new vscode.ShellExecution(task.command, [
-                "artisan",
-                "test",
-                "--filter",
-                filterTag,
-              ]),
-              task.problemMatchers
-            );
-            vscode.tasks.executeTask(vscodeTask);
-          }
-        });
+      vscode.window.showInputBox({ prompt: "Enter the filter tag for the test" }).then((filterTag) => {
+        if (filterTag) {
+          const vscodeTask = new vscode.Task(
+            { type: task.type, task: task.label },
+            vscode.TaskScope.Workspace,
+            task.label,
+            task.type,
+            new vscode.ShellExecution(task.command, ["artisan", "test", "--filter", filterTag]),
+            task.problemMatchers
+          );
+          vscode.tasks.executeTask(vscodeTask);
+        }
+      });
     } else {
       const vscodeTask = new vscode.Task(
         { type: task.type, task: task.label },
@@ -171,70 +169,69 @@ function runTask(taskName: string) {
 }
 
 function runTestCreate() {
-  vscode.window
-    .showInputBox({ prompt: "Enter the test file name" })
-    .then((fileName) => {
-      if (fileName === undefined) {
-        return;
-      }
+  const phpCommand = getPhpCommand();
+  vscode.window.showInputBox({ prompt: "Enter the test file name" }).then((fileName) => {
+    if (fileName === undefined) {
+      return;
+    }
 
-      if (!fileName) {
-        vscode.window.showErrorMessage("Test file name is required");
-        return;
-      }
+    if (!fileName) {
+      vscode.window.showErrorMessage("Test file name is required");
+      return;
+    }
 
-      vscode.window
-        .showQuickPick(
-          [
-            { label: "Pest", description: "pest" },
-            { label: "PHPUnit", description: "phpunit" },
-          ],
-          { placeHolder: "Select the test framework", canPickMany: false }
-        )
-        .then((framework) => {
-          if (framework === undefined) {
-            // User cancelled the input
-            return;
-          }
+    vscode.window
+      .showQuickPick(
+        [
+          { label: "Pest", description: "pest" },
+          { label: "PHPUnit", description: "phpunit" },
+        ],
+        { placeHolder: "Select the test framework", canPickMany: false }
+      )
+      .then((framework) => {
+        if (framework === undefined) {
+          // User cancelled the input
+          return;
+        }
 
-          if (!framework) {
-            framework = { label: "Pest", description: "pest" }; // Default to Pest
-          }
+        if (!framework) {
+          framework = { label: "Pest", description: "pest" }; // Default to Pest
+        }
 
-          vscode.window
-            .showQuickPick(
-              [
-                { label: "Feature", description: "feature" },
-                { label: "Unit", description: "unit" },
-              ],
-              { placeHolder: "Select the test type", canPickMany: false }
-            )
-            .then((testType) => {
-              if (testType === undefined) {
-                // User cancelled the input
-                return;
-              }
-              // No need to set default for testType as Laravel defaults to Feature
-              const args = ["make:test", fileName];
-              if (framework.description === "phpunit") {
-                args.push(`--${framework.description}`);
-              }
-              if (testType && testType.description === "unit") {
-                args.push(`--${testType.description}`);
-              }
+        vscode.window
+          .showQuickPick(
+            [
+              { label: "Feature", description: "feature" },
+              { label: "Unit", description: "unit" },
+            ],
+            { placeHolder: "Select the test type", canPickMany: false }
+          )
+          .then((testType) => {
+            if (testType === undefined) {
+              // User cancelled the input
+              return;
+            }
+            // No need to set default for testType as Laravel defaults to Feature
+            const args = ["make:test", fileName];
+            if (framework.description === "phpunit") {
+              args.push(`--${framework.description}`);
+            }
+            if (testType && testType.description === "unit") {
+              args.push(`--${testType.description}`);
+            }
 
-              const vscodeTask = new vscode.Task(
-                { type: "shell", task: "Artisan Test Create" },
-                vscode.TaskScope.Workspace,
-                "Artisan Test Create",
-                "shell",
-                new vscode.ShellExecution("php", ["artisan", ...args]),
-                []
-              );
-              vscode.tasks.executeTask(vscodeTask);
-            });
-        });
-    });
+            const vscodeTask = new vscode.Task(
+              { type: "shell", task: "Artisan Test Create" },
+              vscode.TaskScope.Workspace,
+              "Artisan Test Create",
+              "shell",
+              new vscode.ShellExecution(phpCommand, ["artisan", ...args]),
+              []
+            );
+            vscode.tasks.executeTask(vscodeTask);
+          });
+      });
+  });
 }
 
 export function deactivate() {}

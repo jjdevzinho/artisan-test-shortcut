@@ -2,7 +2,7 @@
   "name": "artisan-test-shortcut",
   "displayName": "Artisan Test Shortcut",
   "description": "Shortcuts for Artisan Test",
-  "version": "0.0.7",
+  "version": "0.1.0",
   "icon": "images/icon.png",
   "publisher": "jjdevzinho",
   "author": "jjdevzinho <jjdevzinho@gmail.com>",
@@ -28,6 +28,17 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "Artisan Test Shortcut",
+      "properties": {
+        "artisanTestShortcut.phpCommand": {
+          "type": "string",
+          "default": "php",
+          "description": "Command to run Artisan (e.g., php, ./vendor/bin/sail, vendor\\bin\\sail, docker-compose exec app php, etc)"
+        }
+      }
+    },
     "commands": [
       {
         "command": "artisanTest.runTestCreate",

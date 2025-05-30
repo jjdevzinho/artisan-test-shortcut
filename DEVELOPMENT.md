@@ -6,7 +6,20 @@ This guide provides instructions for developing and testing the Artisan Test Sho
 
 - Node.js and npm installed
 - Visual Studio Code installed
-- `vsce` (Visual Studio Code Extension Manager) installed globally
+
+## Global Tools
+
+Before compiling or packaging the extension, install the required global tools:
+
+```sh
+npm install -g typescript vsce
+```
+
+Alternatively, you can use `npx` to run TypeScript without a global install:
+
+```sh
+npx tsc
+```
 
 ## Setup
 
@@ -15,35 +28,38 @@ This guide provides instructions for developing and testing the Artisan Test Sho
    ```sh
    git clone https://github.com/jjdevzinho/artisan-test-shortcut.git
    cd artisan-test-shortcut
-
    ```
 
 2. Install dependencies:
+
    ```sh
    npm install
    ```
 
 ## Building the Extension
 
-1. Open the project in Visual Studio Code::
+1. Open the project in Visual Studio Code:
 
    ```sh
    code .
-
    ```
 
 2. Compile the TypeScript code:
 
    ```sh
    tsc
+   ```
 
+   Or, if you did not install TypeScript globally:
+
+   ```sh
+   npx tsc
    ```
 
 3. To package the extension into a .vsix file, run:
 
    ```sh
    vsce package
-
    ```
 
 4. Press `F5` to open a new VS Code window with the extension loaded.

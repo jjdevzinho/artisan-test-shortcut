@@ -80,3 +80,7 @@ This extension is licensed under the MIT license. See the LICENSE file for more 
 ## Repository
 
 [GitHub Repository](https://github.com/jjdevzinho/artisan-test-shortcut)
+
+## Extension for VScode
+
+[Artisan test shortcut](https://marketplace.visualstudio.com/items?itemName=jjdevzinho.artisan-test-shortcut)

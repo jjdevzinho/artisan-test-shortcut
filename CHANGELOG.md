@@ -6,6 +6,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.0] - 2024-05-30
+
+### Added
+
+- Added configuration option to allow users to set the command used to run Artisan (e.g., php, ./vendor/bin/sail, docker-compose, etc).
+
 ## [0.0.7] - 2024-11-13
 
 ### Removed
