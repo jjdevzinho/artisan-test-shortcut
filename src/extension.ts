@@ -139,7 +139,16 @@ function runTask(taskName: string) {
           }
         });
     } else if (taskName === "Artisan Test Filter") {
-      vscode.window.showInputBox({ prompt: "Enter the filter tag for the test" }).then((filterTag) => {
+      // get the selected text from the active editor
+      const editor = vscode.window.activeTextEditor;
+      const selectedText = editor && !editor.selection.isEmpty
+        ? editor.document.getText(editor.selection)
+        : "";
+
+      vscode.window.showInputBox({
+        prompt: "Enter the filter tag for the test",
+        value: selectedText // default to selected text if available
+      }).then((filterTag) => {
         if (filterTag) {
           const vscodeTask = new vscode.Task(
             { type: task.type, task: task.label },
@@ -234,4 +243,4 @@ function runTestCreate() {
   });
 }
 
-export function deactivate() {}
+export function deactivate() { }
